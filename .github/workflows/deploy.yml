@@ -121,10 +121,9 @@ jobs:
             echo "$ALIYUN_REGISTRY_PASSWORD" | docker login -u "$ALIYUN_REGISTRY_USERNAME" --password-stdin "$ALIYUN_REGISTRY_URL"
 
             cd /opt/app
-            cat > /opt/app/.env << ENVFILE
-            ALIYUN_REGISTRY_URL=$ALIYUN_REGISTRY_URL
-            ALIYUN_REGISTRY_NAMESPACE=$ALIYUN_REGISTRY_NAMESPACE
-            ENVFILE
+            printf "ALIYUN_REGISTRY_URL=%s\nALIYUN_REGISTRY_NAMESPACE=%s\n" \
+              "$ALIYUN_REGISTRY_URL" \
+              "$ALIYUN_REGISTRY_NAMESPACE" > /opt/app/.env
 
             docker compose --env-file /opt/app/.env -f /opt/app/docker-compose.yml pull
 
