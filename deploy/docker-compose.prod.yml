@@ -1,0 +1,22 @@
+services:
+  frontend:
+    image: ${DOCKER_USERNAME}/react-gin-frontend:${IMAGE_TAG:-latest}
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  backend:
+    image: ${DOCKER_USERNAME}/react-gin-backend:${IMAGE_TAG:-latest}
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+    restart: unless-stopped
+
+networks:
+  app-network:
+    driver: bridge
