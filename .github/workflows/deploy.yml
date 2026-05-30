@@ -68,16 +68,16 @@ jobs:
           ALIYUN_REGISTRY_USERNAME: ${{ secrets.ALIYUN_REGISTRY_USERNAME }}
           ALIYUN_REGISTRY_PASSWORD: ${{ secrets.ALIYUN_REGISTRY_PASSWORD }}
         run: |
-          ssh $SERVER_USER@$SERVER_HOST << 'EOF'
+          ssh $SERVER_USER@$SERVER_HOST << EOF
             set -e
 
             echo "$ALIYUN_REGISTRY_PASSWORD" | docker login -u "$ALIYUN_REGISTRY_USERNAME" --password-stdin "$ALIYUN_REGISTRY_URL"
 
             cd /opt/app
 
-            docker compose pull
+            docker compose -f /opt/app/docker-compose.yml pull
 
-            docker compose up -d --no-deps
+            docker compose -f /opt/app/docker-compose.yml up -d --no-deps
 
             docker image prune -f
 
