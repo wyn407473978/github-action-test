@@ -74,6 +74,14 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+      - name: Debug SSH Info
+        run: |
+          echo "=== SSH Debug Info ==="
+          echo "SERVER_HOST: ${{ secrets.SERVER_HOST }}"
+          echo "SERVER_USER: ${{ secrets.SERVER_USER }}"
+          echo "SSH_PRIVATE_KEY starts with: $(echo '${{ secrets.SSH_PRIVATE_KEY }}' | head -c 50)..."
+          echo "SSH_PRIVATE_KEY length: $(echo '${{ secrets.SSH_PRIVATE_KEY }}' | wc -c)"
+
       - name: Add server to known hosts
         run: |
           ssh-keyscan -H ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts 2>/dev/null
