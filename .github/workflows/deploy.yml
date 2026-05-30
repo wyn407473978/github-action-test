@@ -6,11 +6,6 @@ on:
       - main
   workflow_dispatch:
 
-env:
-  IMAGE_PREFIX: ${{ secrets.ALIYUN_REGISTRY_URL }}/${{ secrets.ALIYUN_REGISTRY_NAMESPACE }}/react-gin
-  FRONTEND_IMAGE: ${{ env.IMAGE_PREFIX }}:frontend
-  BACKEND_IMAGE: ${{ env.IMAGE_PREFIX }}:backend
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -34,8 +29,7 @@ jobs:
           context: ./frontend
           push: true
           tags: |
-            ${{ env.FRONTEND_IMAGE }}:latest
-            ${{ env.FRONTEND_IMAGE }}:${{ github.sha }}
+            ${{ secrets.ALIYUN_REGISTRY_URL }}/${{ secrets.ALIYUN_REGISTRY_NAMESPACE }}/react-gin:frontend
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -45,8 +39,7 @@ jobs:
           context: ./backend
           push: true
           tags: |
-            ${{ env.BACKEND_IMAGE }}:latest
-            ${{ env.BACKEND_IMAGE }}:${{ github.sha }}
+            ${{ secrets.ALIYUN_REGISTRY_URL }}/${{ secrets.ALIYUN_REGISTRY_NAMESPACE }}/react-gin:backend
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -74,7 +67,6 @@ jobs:
           ALIYUN_REGISTRY_NAMESPACE: ${{ secrets.ALIYUN_REGISTRY_NAMESPACE }}
           ALIYUN_ACCESS_KEY_ID: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
           ALIYUN_ACCESS_KEY_SECRET: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
-          IMAGE_TAG: ${{ github.sha }}
         run: |
           ssh $SERVER_USER@$SERVER_HOST << 'EOF'
             set -e
