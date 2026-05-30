@@ -86,6 +86,17 @@ jobs:
         run: |
           ssh-keyscan -H ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts 2>/dev/null
 
+      - name: Validate SSH connection
+        env:
+          SERVER_HOST: ${{ secrets.SERVER_HOST }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+        run: |
+          set -e
+          if ! ssh -vvv -o BatchMode=yes -o ConnectTimeout=10 "$SERVER_USER@$SERVER_HOST" "echo 'SSH auth ok'"; then
+            echo "SSH validation failed. Check SERVER_HOST/SERVER_USER, authorized_keys, and private key format in SSH_PRIVATE_KEY."
+            exit 1
+          fi
+
       - name: Deploy to server
         env:
           SERVER_HOST: ${{ secrets.SERVER_HOST }}
