@@ -1,6 +1,6 @@
 services:
   frontend:
-    image: ${DOCKER_USERNAME}/react-gin-frontend:${IMAGE_TAG:-latest}
+    image: ${ALIYUN_REGISTRY_URL}/${ALIYUN_REGISTRY_NAMESPACE}/react-gin:frontend
     ports:
       - "80:80"
     depends_on:
@@ -10,7 +10,7 @@ services:
     restart: unless-stopped
 
   backend:
-    image: ${DOCKER_USERNAME}/react-gin-backend:${IMAGE_TAG:-latest}
+    image: ${ALIYUN_REGISTRY_URL}/${ALIYUN_REGISTRY_NAMESPACE}/react-gin:backend
     ports:
       - "8080:8080"
     networks:
